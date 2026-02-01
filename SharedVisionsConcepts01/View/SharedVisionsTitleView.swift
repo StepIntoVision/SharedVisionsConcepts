@@ -9,15 +9,14 @@ import SwiftUI
 import RealityKit
 import RealityKitContent
 
-struct ContentView: View {
+struct SharedVisionsTitleView: View {
 
     var body: some View {
-        VStack {
-            Model3D(named: "Scene", bundle: realityKitContentBundle)
-                .padding(.bottom, 50)
-
-            Text("Hello, world!")
-
+        VStack(spacing: 12) {
+            Text("Shared Visions")
+                .font(.largeTitle)
+            Text("An immersive documentary about the Apple Vision Pro community")
+                .font(.caption)
             ToggleImmersiveSpaceButton()
         }
         .padding()
@@ -25,6 +24,6 @@ struct ContentView: View {
 }
 
 #Preview(windowStyle: .automatic) {
-    ContentView()
+    SharedVisionsTitleView()
         .environment(AppModel())
 }
