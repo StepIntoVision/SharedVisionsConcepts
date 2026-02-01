@@ -22,7 +22,7 @@ struct HoneycombLayout: Layout, Animatable {
         guard !subviews.isEmpty else { return }
 
         let center = CGPoint(x: bounds.midX, y: bounds.midY)
-        let hexSize: CGFloat = 50
+        let hexSize: CGFloat = 100
         let hexRadius = hexSize / 2
 
         // Calculate hexagon spacing (distance between centers)

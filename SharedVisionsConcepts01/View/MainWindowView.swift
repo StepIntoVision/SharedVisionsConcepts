@@ -11,7 +11,7 @@ struct MainWindowView: View {
     var body: some View {
         TabView {
             Tab("Shared Visions", systemImage: "circle.hexagongrid.fill") {
-                SharedVisionsTitleView()
+                SharedVisionsView()
             }
 
             Tab("Library", systemImage: "circle.fill") {
