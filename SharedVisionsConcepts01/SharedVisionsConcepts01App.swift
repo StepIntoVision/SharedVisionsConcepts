@@ -14,9 +14,16 @@ struct SharedVisionsConcepts01App: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainWindowView()
+//                .glassBackgroundEffect(.feathered(padding: 36, softEdgeRadius: 3), displayMode: .always)
+                .glassBackgroundEffect(in: .circle, displayMode: .always)
                 .environment(appModel)
+
+
         }
+        // TODO: need to maintain square aspect ratio on resize
+        .defaultSize(width: 800, height: 800)
+        .windowStyle(.plain)
 
         ImmersiveSpace(id: appModel.immersiveSpaceID) {
             ImmersiveView()
