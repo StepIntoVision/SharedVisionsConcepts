@@ -21,6 +21,12 @@ struct SharedVisionsBackground: View {
 
                 }
                 .padding(12)
+                .hoverEffect { effect, isActive, proxy in
+                    effect
+                        .scaleEffect(isActive ? 1.2 : 1.0)
+                        .opacity(isActive ? 1.0 : 0.6)
+
+                }
             }
         }
     }
