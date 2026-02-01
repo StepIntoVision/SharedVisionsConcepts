@@ -14,12 +14,17 @@ struct SharedVisionsTitleView: View {
     var body: some View {
         VStack(spacing: 12) {
             Text("Shared Visions")
-                .font(.largeTitle)
-            Text("An immersive documentary about the Apple Vision Pro community")
-                .font(.caption)
+                .font(.extraLargeTitle2)
+            VStack {
+                Text("An immersive story about the")
+                Text("Apple Vision Pro Community")
+            }
+            .font(.caption)
             ToggleImmersiveSpaceButton()
         }
+        .frame(width: 300)
         .padding()
+        .glassBackgroundEffect(.feathered(padding: 120, softEdgeRadius: 8), in: .circle, displayMode: .always)
     }
 }
 
