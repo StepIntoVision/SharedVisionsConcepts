@@ -22,6 +22,16 @@ struct ConceptRegistry {
         description: "",
         success: true,
         makeView: { AnyView(Concept002()) }
+    ),
+    Concept(
+        title: "Concept 003",
+        type: .SPACE_FULL,
+        date: Date("2/4/2026"),
+        isFeatured: true,
+        subtitle: "Spheres in a Circle",
+        description: "Creates an immersive space with N spheres positioned in a circle around the user. The first sphere is placed in front of the user, then duplicated and arranged in a loop.",
+        success: true,
+        makeView: { AnyView(Concept003()) }
     )
     ]
 
