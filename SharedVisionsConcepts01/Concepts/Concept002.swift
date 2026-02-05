@@ -30,8 +30,8 @@ struct Concept002: View {
                 mesh: .generateSphere(radius: 0.05),
                 materials: [SimpleMaterial(color: .black, isMetallic: false)]
             )
-            sphere1.position = [0.15, 0, 0]
-            
+            sphere1.position = [0.25, 0, 0]
+
             let sphere2 = ModelEntity(
                 mesh: .generateSphere(radius: 0.05),
                 materials: [SimpleMaterial(color: .black, isMetallic: false)]

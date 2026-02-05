@@ -57,7 +57,7 @@ struct SharedVisionsConcepts01App: App {
         // 3. Volume: Use this window group to open 3D Volumes
         WindowGroup(id: "RouterVolume", for: String.self, content: { $route in
 //            let initialSize = Size3D(width: 500, height: 500, depth: 500)
-            let scaler = 4.0
+//            let scaler = 4.0
             ConceptRouter(route: $route)
                 .environment(appModel)
 //                .frame(minWidth: initialSize.width, maxWidth: initialSize.width * scaler,
