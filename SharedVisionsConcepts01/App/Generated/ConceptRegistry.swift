@@ -39,7 +39,7 @@ struct ConceptRegistry {
         date: Date("2/6/2026"),
         isFeatured: true,
         subtitle: "Cover Flow",
-        description: "A horizontally scrolling cover flow layout using the Layout protocol and rotation3DLayout modifier for proper frame handling.",
+        description: "A horizontally scrolling cover flow layout using `rotation3DLayout` modifier for proper frame handling, `onGeometryChange` for position tracking without GeometryReader, and an animated demo mode with bidirectional auto-scrolling. Features dynamic rotation based on distance from center and opacity fade on edges.",
         success: true,
         makeView: { AnyView(Concept004()) }
     )

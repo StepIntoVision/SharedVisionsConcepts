@@ -4,7 +4,7 @@
 //
 //  Subtitle: Cover Flow
 //
-//  Description: A horizontally scrolling cover flow layout using the Layout protocol and rotation3DLayout modifier for proper frame handling.
+//  Description: A horizontally scrolling cover flow layout using `rotation3DLayout` modifier for proper frame handling, `onGeometryChange` for position tracking without GeometryReader, and an animated demo mode with bidirectional auto-scrolling. Features dynamic rotation based on distance from center and opacity fade on edges.
 //
 //  Type: Window Alt
 //
@@ -21,33 +21,102 @@ struct Concept004: View {
     private let itemSpacing: CGFloat = 100
     private let containerWidth: CGFloat = 800
     private let containerHeight: CGFloat = 400
+    private let itemCount = 20
 
     @State private var showDebug = true
+    @State private var isDemoMode = false
+    @State private var currentIndex = 0
+    @State private var isReversing = false
+    @State private var demoTask: Task<Void, Never>?
 
     var body: some View {
         VStack(spacing: 24) {
             Text("Cover Flow Concept")
                 .font(.largeTitle)
-            ScrollView(.horizontal, showsIndicators: false) {
-                CoverFlowLayout(
-                    itemSize: CGSize(width: nodeSize, height: nodeSize),
-                    spacing: itemSpacing
-                ) {
-                    ForEach(0..<20, id: \.self) { index in
-                        CoverFlowItem(nodeSize: nodeSize, index: index, showDebug: $showDebug)
+                .padding()
+                .glassBackgroundEffect(in: .capsule, displayMode: .always)
+            ScrollViewReader { proxy in
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: itemSpacing) {
+                        ForEach(0..<itemCount, id: \.self) { index in
+                            CoverFlowItem(nodeSize: nodeSize, index: index, showDebug: $showDebug)
+                                .frame(width: nodeSize, height: nodeSize)
+                                .id(index)
+                        }
+                    }
+                    .scrollTargetLayout()
+                    .padding(.horizontal, containerWidth / 2 - nodeSize / 2)
+                }
+                .scrollTargetBehavior(.viewAligned)
+                .onChange(of: currentIndex) { _, newIndex in
+                    withAnimation(.easeInOut(duration: 0.5)) {
+                        proxy.scrollTo(newIndex, anchor: .center)
                     }
                 }
-                .scrollTargetLayout()
-                .padding(.horizontal, containerWidth / 2 - nodeSize / 2)
             }
-            Toggle(isOn: $showDebug, label: {
-                Text("Debug Lines")
-            })
-            .toggleStyle(.button)
+            
+            HStack(spacing: 16) {
+                Toggle(isOn: $showDebug, label: {
+                    Text("Debug Lines")
+                })
+                .toggleStyle(.button)
+                
+                Toggle(isOn: $isDemoMode, label: {
+                    Text(isDemoMode ? "Stop Demo" : "Play Demo")
+                })
+                .toggleStyle(.button)
+            }
+            .padding()
+            .glassBackgroundEffect(in: .capsule, displayMode: .always)
         }
-        .scrollTargetBehavior(.viewAligned)
         .frame(width: containerWidth, height: containerHeight)
-        .glassBackgroundEffect()
+//        .glassBackgroundEffect()
+        .onChange(of: isDemoMode) { _, isActive in
+            if isActive {
+                startDemo()
+            } else {
+                stopDemo()
+            }
+        }
+        .onDisappear {
+            stopDemo()
+        }
+    }
+    
+    private func startDemo() {
+        demoTask = Task {
+            while !Task.isCancelled && isDemoMode {
+                // Wait 3 seconds on current node
+                try? await Task.sleep(for: .seconds(3))
+                
+                guard !Task.isCancelled && isDemoMode else { break }
+                
+                // Move to next node (animation handled by onChange)
+                if isReversing {
+                    if currentIndex > 0 {
+                        currentIndex -= 1
+                    } else {
+                        isReversing = false
+                        currentIndex = 1
+                    }
+                } else {
+                    if currentIndex < itemCount - 1 {
+                        currentIndex += 1
+                    } else {
+                        isReversing = true
+                        currentIndex = itemCount - 2
+                    }
+                }
+                
+                // Wait for animation to complete
+                try? await Task.sleep(for: .seconds(0.5))
+            }
+        }
+    }
+    
+    private func stopDemo() {
+        demoTask?.cancel()
+        demoTask = nil
     }
 }
 
