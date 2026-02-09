@@ -35,11 +35,11 @@ struct ConceptRegistry {
     ),
     Concept(
         title: "Concept 004",
-        type: .SPACE,
+        type: .WINDOW_ALT,
         date: Date("2/6/2026"),
-        isFeatured: false,
-        subtitle: "Random Spheres in Space",
-        description: "120 spheres randomly placed throughout the scene",
+        isFeatured: true,
+        subtitle: "Cover Flow",
+        description: "",
         success: true,
         makeView: { AnyView(Concept004()) }
     )
