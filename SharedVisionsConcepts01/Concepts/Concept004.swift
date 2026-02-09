@@ -18,23 +18,32 @@ import RealityKitContent
 
 struct Concept004: View {
     let nodeSize: CGFloat = 200
-    private let itemSpacing: CGFloat = 16
+    private let itemSpacing: CGFloat = 100
     private let containerWidth: CGFloat = 800
-    private let containerHeight: CGFloat = 800
+    private let containerHeight: CGFloat = 400
+
+    @State private var showDebug = true
 
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            CoverFlowLayout(
-                itemSize: CGSize(width: nodeSize, height: nodeSize),
-                spacing: itemSpacing
-            ) {
-                ForEach(0..<20, id: \.self) { index in
-                    CoverFlowItem(nodeSize: nodeSize, index: index)
+        VStack(spacing: 24) {
+            Text("Cover Flow Concept")
+                .font(.largeTitle)
+            ScrollView(.horizontal, showsIndicators: false) {
+                CoverFlowLayout(
+                    itemSize: CGSize(width: nodeSize, height: nodeSize),
+                    spacing: itemSpacing
+                ) {
+                    ForEach(0..<20, id: \.self) { index in
+                        CoverFlowItem(nodeSize: nodeSize, index: index, showDebug: $showDebug)
+                    }
                 }
+                .scrollTargetLayout()
+                .padding(.horizontal, containerWidth / 2 - nodeSize / 2)
             }
-            .scrollTargetLayout()
-            .padding(.horizontal, containerWidth / 2 - nodeSize / 2)
-            .padding(.vertical, containerHeight / 2 - nodeSize / 2)
+            Toggle(isOn: $showDebug, label: {
+                Text("Debug Lines")
+            })
+            .toggleStyle(.button)
         }
         .scrollTargetBehavior(.viewAligned)
         .frame(width: containerWidth, height: containerHeight)
@@ -87,13 +96,15 @@ private struct CoverFlowItem: View {
     @State private var rotation: Double = 0
     @State private var opacity: Double = 1
 
+    @Binding var showDebug: Bool
+
     var body: some View {
         RoundedRectangle(cornerRadius: 24)
             .foregroundStyle(.black)
             .padding()
             .frame(width: nodeSize, height: nodeSize)
             .frame(depth: 40)
-            .debugBorder3D(.white)
+            .debugBorder3D(showDebug ? .white : .clear)
             .shadow(radius: 24)
             .offset(z: 60)
             .rotation3DLayout(.degrees(rotation), axis: .y)
