@@ -21,6 +21,8 @@ struct Concept006: View {
     @State private var showDebugLines = false
     @State private var layoutRotation: Double = 90
     @State private var angleOffset: Angle = .zero
+    @State private var isAutoPlaying = false
+    @State private var autoPlayTask: Task<Void, Never>?
     
     let emoji: [String] = ["🌸", "🐸", "❤️", "🔥", "💻", "🐶", "🥸", "📱", "🎉", "🚀", "🤔", "💡"]
 
@@ -51,22 +53,31 @@ struct Concept006: View {
         .debugBorder3D(showDebugLines ? .white : .clear)
         .ornament(attachmentAnchor: .scene(.trailing), ornament: {
             VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    Button(action: {
+                        withAnimation(.easeInOut(duration: 0.5)) {
+                            angleOffset += .degrees(-30)
+                        }
+                    }, label: {
+                        Image(systemName: "arrow.counterclockwise")
+                    })
+                    .disabled(isAutoPlaying)
+
+
+                    Button(action: {
+                        withAnimation(.easeInOut(duration: 0.5)) {
+                            angleOffset += .degrees(30)
+                        }
+                    }, label: {
+                        Image(systemName: "arrow.clockwise")
+                    })
+                    .disabled(isAutoPlaying)
+                }
 
                 Button(action: {
-                    withAnimation(.easeInOut(duration: 0.5)) {
-                        angleOffset += .degrees(-30)
-                    }
+                    isAutoPlaying.toggle()
                 }, label: {
-                    Label("Previous", systemImage: "arrow.counterclockwise")
-                })
-
-
-                Button(action: {
-                    withAnimation(.easeInOut(duration: 0.5)) {
-                        angleOffset += .degrees(30)
-                    }
-                }, label: {
-                    Label("Next", systemImage: "arrow.clockwise")
+                    Label(isAutoPlaying ? "Stop" : "Auto Play", systemImage: isAutoPlaying ? "stop.fill" : "play.fill")
                 })
                 
                 Button(action: {
@@ -79,6 +90,40 @@ struct Concept006: View {
             .controlSize(.small)
             .glassBackgroundEffect()
         })
+        .onChange(of: isAutoPlaying) { _, isActive in
+            if isActive {
+                startAutoPlay()
+            } else {
+                stopAutoPlay()
+            }
+        }
+        .onDisappear {
+            stopAutoPlay()
+        }
+    }
+    
+    private func startAutoPlay() {
+        autoPlayTask = Task {
+            while !Task.isCancelled && isAutoPlaying {
+                // Wait 2 seconds on current item
+                try? await Task.sleep(for: .seconds(2))
+                
+                guard !Task.isCancelled && isAutoPlaying else { break }
+                
+                // Move to next item
+                withAnimation(.easeInOut(duration: 0.5)) {
+                    angleOffset += .degrees(30)
+                }
+                
+                // Wait for animation to complete
+                try? await Task.sleep(for: .seconds(0.5))
+            }
+        }
+    }
+    
+    private func stopAutoPlay() {
+        autoPlayTask?.cancel()
+        autoPlayTask = nil
     }
 }
 
