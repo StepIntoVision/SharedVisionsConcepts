@@ -45,7 +45,7 @@ struct ConceptRegistry {
     ),
     Concept(
         title: "Concept 005",
-        type: .WINDOW,
+        type: .WINDOW_ALT,
         date: Date("2/9/2026"),
         isFeatured: true,
         subtitle: "Horizontal Scroll",

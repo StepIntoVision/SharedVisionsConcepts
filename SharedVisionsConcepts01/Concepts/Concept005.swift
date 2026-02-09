@@ -6,7 +6,7 @@
 //
 //  Description: A simple horizontally scrolling list of placeholder items in a window.
 //
-//  Type: Window
+//  Type: Window Alt
 //
 //  Featured: true
 //
@@ -16,36 +16,40 @@ import SwiftUI
 
 struct Concept005: View {
     private let itemCount = 20
+    @State private var showDebug = false
     
     var body: some View {
         VStack(spacing: 24) {
             Text("Horizontal Scroll Concept")
                 .font(.largeTitle)
                 .padding()
-            
-            ScrollView(.horizontal, showsIndicators: true) {
-                HStack(spacing: 20) {
+                .glassBackgroundEffect(in: .capsule, displayMode: .always)
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 24) {
                     ForEach(0..<itemCount, id: \.self) { index in
-                        PlaceholderItem(index: index)
+                        RoundedRectangle(cornerRadius: 16)
+                            .foregroundStyle(.black)
+                            .frame(width: 200, height: 200)
+                            .debugBorder3D(showDebug ? .white : .clear)
                     }
                 }
                 .padding(.horizontal, 40)
             }
+            
+            Toggle(isOn: $showDebug, label: {
+                Text("Debug Lines")
+            })
+            .toggleStyle(.button)
+            .padding()
+            .glassBackgroundEffect(in: .capsule, displayMode: .always)
         }
-        .frame(width: 800, height: 600)
+        .frame(width: 800, height: 400)
         .padding()
     }
 }
 
-private struct PlaceholderItem: View {
-    let index: Int
-    
-    var body: some View {
-        RoundedRectangle(cornerRadius: 16)
-            .foregroundStyle(.black)
-            .frame(width: 200, height: 200)
-    }
-}
+
 
 #Preview {
     Concept005()
