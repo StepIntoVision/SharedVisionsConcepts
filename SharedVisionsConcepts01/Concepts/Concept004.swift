@@ -17,7 +17,7 @@ import RealityKit
 import RealityKitContent
 
 struct Concept004: View {
-    let nodeSize: CGFloat = 400
+    let nodeSize: CGFloat = 200
     private let itemSpacing: CGFloat = 16
     private let containerWidth: CGFloat = 800
     private let containerHeight: CGFloat = 800
