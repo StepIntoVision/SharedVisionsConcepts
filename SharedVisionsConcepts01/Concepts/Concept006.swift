@@ -22,15 +22,24 @@ struct Concept006: View {
     @State private var layoutRotation: Double = 90
     @State private var angleOffset: Angle = .zero
     
-    let emoji: [String] = ["🌸", "🐸", "❤️", "🔥", "💻", "🐶", "🥸", "📱", "🎉", "🚀", "🤔"]
+    let emoji: [String] = ["🌸", "🐸", "❤️", "🔥", "💻", "🐶", "🥸", "📱", "🎉", "🚀", "🤔", "💡"]
+
+    private var frontIndex: Int {
+        let totalItems = emoji.count
+        let degreesPerItem = 360.0 / Double(totalItems)
+        let normalizedAngle = -angleOffset.degrees.truncatingRemainder(dividingBy: 360)
+        let rawIndex = Int(round(normalizedAngle / degreesPerItem))
+        return (rawIndex % totalItems + totalItems) % totalItems
+    }
     
     var body: some View {
         VStack {
             Spacer()
             RadialLayout(angleOffset: angleOffset) {
-                ForEach(0..<11, id: \.self) { index in
+                ForEach(0..<emoji.count, id: \.self) { index in
                     ModelViewEmoji(name: "UISphere01", emoji: emoji[index], bundle: realityKitContentBundle)
                         .rotation3DLayout(Rotation3D(angle: .degrees(360 - layoutRotation), axis: .x))
+                        .scaleEffect(index == frontIndex ? 1.0 : 0.5)
                 }
             }
             .rotation3DLayout(Rotation3D(angle: .degrees(layoutRotation), axis: .x))
