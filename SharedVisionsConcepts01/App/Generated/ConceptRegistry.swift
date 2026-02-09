@@ -52,6 +52,16 @@ struct ConceptRegistry {
         description: "A simple horizontally scrolling list of placeholder items in a window.",
         success: true,
         makeView: { AnyView(Concept005()) }
+    ),
+    Concept(
+        title: "Concept 006",
+        type: .VOLUME,
+        date: Date("2/9/2026"),
+        isFeatured: true,
+        subtitle: "Radial Ring",
+        description: "A volumetric ring of emoji spheres using RadialLayout with rotation controls and Z-axis offset animation for depth effects.",
+        success: true,
+        makeView: { AnyView(Concept006()) }
     )
     ]
 
