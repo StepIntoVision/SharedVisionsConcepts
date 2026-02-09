@@ -20,8 +20,7 @@ struct Concept005: View {
     
     var body: some View {
         VStack(spacing: 24) {
-            Text("Horizontal Scroll Concept")
-                .font(.largeTitle)
+            Text("Horizontal Scroll with linear gradient mask")
                 .padding()
                 .glassBackgroundEffect(in: .capsule, displayMode: .always)
 
@@ -36,7 +35,16 @@ struct Concept005: View {
                 }
                 .padding(.horizontal, 40)
             }
-            
+            .mask {
+                LinearGradient(gradient: Gradient(stops: [
+                    .init(color: .clear, location: 0),
+                    .init(color: .black, location: 0.1),
+                    .init(color: .black, location: 0.9),
+                    .init(color: .clear, location: 1)
+
+                ]), startPoint: .leading, endPoint: .trailing)
+            }
+
             Toggle(isOn: $showDebug, label: {
                 Text("Debug Lines")
             })
