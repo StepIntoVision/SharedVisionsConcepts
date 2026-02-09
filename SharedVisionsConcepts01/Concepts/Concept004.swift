@@ -4,7 +4,7 @@
 //
 //  Subtitle: Cover Flow
 //
-//  Description:
+//  Description: A horizontally scrolling cover flow layout using the Layout protocol and rotation3DLayout modifier for proper frame handling.
 //
 //  Type: Window Alt
 //
@@ -19,30 +19,25 @@ import RealityKitContent
 struct Concept004: View {
     let nodeSize: CGFloat = 400
     private let itemSpacing: CGFloat = 16
+    private let containerWidth: CGFloat = 800
+    private let containerHeight: CGFloat = 800
 
     var body: some View {
-        GeometryReader { outerGeo in
-            let containerMidX = outerGeo.frame(in: .global).midX
-
-            ScrollView(.horizontal, showsIndicators: false) {
-                CoverFlowLayout(
-                    itemSize: CGSize(width: nodeSize, height: nodeSize),
-                    spacing: itemSpacing
-                ) {
-                    ForEach(1..<20) { _ in
-                        CoverFlowItem(
-                            nodeSize: nodeSize,
-                            containerMidX: containerMidX
-                        )
-                    }
+        ScrollView(.horizontal, showsIndicators: false) {
+            CoverFlowLayout(
+                itemSize: CGSize(width: nodeSize, height: nodeSize),
+                spacing: itemSpacing
+            ) {
+                ForEach(0..<20, id: \.self) { index in
+                    CoverFlowItem(nodeSize: nodeSize, index: index)
                 }
-                .scrollTargetLayout()
-                .padding(.horizontal, outerGeo.size.width / 2 - nodeSize / 2)
-                .padding(.vertical, outerGeo.size.height / 2 - nodeSize / 2)
             }
-            .scrollTargetBehavior(.viewAligned)
+            .scrollTargetLayout()
+            .padding(.horizontal, containerWidth / 2 - nodeSize / 2)
+            .padding(.vertical, containerHeight / 2 - nodeSize / 2)
         }
-        .frame(width: 800, height: 800)
+        .scrollTargetBehavior(.viewAligned)
+        .frame(width: containerWidth, height: containerHeight)
         .glassBackgroundEffect()
     }
 }
@@ -88,44 +83,56 @@ private struct CoverFlowLayout: Layout {
 
 private struct CoverFlowItem: View {
     let nodeSize: CGFloat
-    let containerMidX: CGFloat
+    let index: Int
+    @State private var rotation: Double = 0
+    @State private var opacity: Double = 1
 
     var body: some View {
-        GeometryReader { geo in
-            let itemCenterX = geo.frame(in: .global).midX
-            let distance = abs(itemCenterX - containerMidX)
-            let maxDistance = max(1, containerMidX)
-            let rotation = rotationAngle(for: itemCenterX)
-
-            // Keep full opacity in the central 80% of the screen.
-            let fadeThreshold = maxDistance * 0.4
-            let opacity = distance < fadeThreshold
-                ? 1.0
-                : max(0.1, 1.0 - (distance - fadeThreshold) / (maxDistance - fadeThreshold))
-
-            RoundedRectangle(cornerRadius: 24)
-                .foregroundStyle(.black)
-                .padding()
-                .frame(width: nodeSize, height: nodeSize)
-                .frame(depth: 40)
-                .debugBorder3D(.white)
-                .rotation3DLayout(.degrees(rotation), axis: .y)
-                .shadow(radius: 24)
-                .opacity(opacity)
-                .offset(z: 60)
-        }
-        .frame(width: nodeSize, height: nodeSize)
+        RoundedRectangle(cornerRadius: 24)
+            .foregroundStyle(.black)
+            .padding()
+            .frame(width: nodeSize, height: nodeSize)
+            .frame(depth: 40)
+            .debugBorder3D(.white)
+            .shadow(radius: 24)
+            .offset(z: 60)
+            .rotation3DLayout(.degrees(rotation), axis: .y)
+            .opacity(opacity)
+            .onGeometryChange(for: CoverFlowGeometry.self) { geometryProxy in
+                let frame = geometryProxy.frame(in: .scrollView)
+                let scrollViewBounds = geometryProxy.bounds(of: .scrollView) ?? .zero
+                let scrollViewMidX = scrollViewBounds.width / 2
+                let itemCenterX = frame.midX
+                let distance = itemCenterX - scrollViewMidX
+                
+                // Calculate rotation
+                let deadZone = nodeSize * 0.28
+                let calculatedRotation = abs(distance) < deadZone ? 0 : -Double(distance) / 8
+                
+                // Calculate opacity
+                let maxDistance = scrollViewMidX
+                let fadeThreshold = maxDistance * 0.4
+                let absDistance = abs(distance)
+                let calculatedOpacity = absDistance < fadeThreshold
+                    ? 1.0
+                    : max(0.1, 1.0 - (absDistance - fadeThreshold) / (maxDistance - fadeThreshold))
+                
+                return CoverFlowGeometry(rotation: calculatedRotation, opacity: calculatedOpacity)
+            } action: { newValue in
+                rotation = newValue.rotation
+                opacity = newValue.opacity
+            }
     }
+}
 
-    private func rotationAngle(for itemCenterX: CGFloat) -> Double {
-        let distance = itemCenterX - containerMidX
-        let deadZone = nodeSize * 0.28
+private struct CoverFlowGeometry: Sendable {
+    let rotation: Double
+    let opacity: Double
+}
 
-        if abs(distance) < deadZone {
-            return 0
-        }
-
-        return -Double(distance) / 8
+extension CoverFlowGeometry: Equatable {
+    nonisolated static func == (lhs: CoverFlowGeometry, rhs: CoverFlowGeometry) -> Bool {
+        lhs.rotation == rhs.rotation && lhs.opacity == rhs.opacity
     }
 }
 

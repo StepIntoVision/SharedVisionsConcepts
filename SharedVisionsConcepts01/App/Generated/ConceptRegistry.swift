@@ -39,7 +39,7 @@ struct ConceptRegistry {
         date: Date("2/6/2026"),
         isFeatured: true,
         subtitle: "Cover Flow",
-        description: "",
+        description: "A horizontally scrolling cover flow layout using the Layout protocol and rotation3DLayout modifier for proper frame handling.",
         success: true,
         makeView: { AnyView(Concept004()) }
     )
