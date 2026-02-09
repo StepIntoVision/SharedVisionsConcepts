@@ -42,6 +42,16 @@ struct ConceptRegistry {
         description: "A horizontally scrolling cover flow layout using `rotation3DLayout` modifier for proper frame handling, `onGeometryChange` for position tracking without GeometryReader, and an animated demo mode with bidirectional auto-scrolling. Features dynamic rotation based on distance from center and opacity fade on edges.",
         success: true,
         makeView: { AnyView(Concept004()) }
+    ),
+    Concept(
+        title: "Concept 005",
+        type: .WINDOW,
+        date: Date("2/9/2026"),
+        isFeatured: true,
+        subtitle: "Horizontal Scroll",
+        description: "A simple horizontally scrolling list of placeholder items in a window.",
+        success: true,
+        makeView: { AnyView(Concept005()) }
     )
     ]
 

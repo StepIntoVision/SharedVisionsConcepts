@@ -70,7 +70,6 @@ struct Concept004: View {
             .glassBackgroundEffect(in: .capsule, displayMode: .always)
         }
         .frame(width: containerWidth, height: containerHeight)
-//        .glassBackgroundEffect()
         .onChange(of: isDemoMode) { _, isActive in
             if isActive {
                 startDemo()
