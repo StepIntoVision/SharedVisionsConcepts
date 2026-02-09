@@ -19,76 +19,45 @@ import RealityKitContent
 struct Concept006: View {
     
     @State private var showDebugLines = false
-    @State private var layoutRotation: Double = 45
+    @State private var layoutRotation: Double = 90
     @State private var angleOffset: Angle = .zero
-    @State private var offsetZ: CGFloat = 0
-    @State private var isAnimatingOffsetZ: Bool = false
-    @State private var animationTimerOffsetZ: Timer?
-    @State private var offsetZDirection: Bool = true
     
     let emoji: [String] = ["🌸", "🐸", "❤️", "🔥", "💻", "🐶", "🥸", "📱", "🎉", "🚀", "🤔"]
     
     var body: some View {
         VStack {
+            Spacer()
             RadialLayout(angleOffset: angleOffset) {
                 ForEach(0..<11, id: \.self) { index in
                     ModelViewEmoji(name: "UISphere01", emoji: emoji[index], bundle: realityKitContentBundle)
                         .rotation3DLayout(Rotation3D(angle: .degrees(360 - layoutRotation), axis: .x))
-                        .offset(z: offsetZ * CGFloat(index))
                 }
             }
             .rotation3DLayout(Rotation3D(angle: .degrees(layoutRotation), axis: .x))
-            .frame(width: 300, height: 300)
+
             .debugBorder3D(showDebugLines ? .white : .clear)
         }
-        .frame(width: 800, height: 800)
+        .frame(width: 1000, height: 1000)
+        .frame(depth: 1000)
+        .debugBorder3D(showDebugLines ? .white : .clear)
         .ornament(attachmentAnchor: .scene(.trailing), ornament: {
             VStack(alignment: .leading, spacing: 8) {
-                
+
                 Button(action: {
                     withAnimation(.easeInOut(duration: 0.5)) {
-                        layoutRotation = layoutRotation == 45 ? 0 : 45
+                        angleOffset += .degrees(-30)
                     }
                 }, label: {
-                    Label("Rotate Layout", systemImage: "arrow.triangle.2.circlepath")
+                    Label("Previous", systemImage: "arrow.counterclockwise")
                 })
-                
+
+
                 Button(action: {
                     withAnimation(.easeInOut(duration: 0.5)) {
                         angleOffset += .degrees(30)
                     }
                 }, label: {
-                    Label("Shift Angle", systemImage: "arrow.clockwise")
-                })
-                
-                Button(action: {
-                    if isAnimatingOffsetZ {
-                        animationTimerOffsetZ?.invalidate()
-                        animationTimerOffsetZ = nil
-                        isAnimatingOffsetZ = false
-                        withAnimation(.easeInOut(duration: 0.5)) {
-                            offsetZ = 0
-                        }
-                    } else {
-                        isAnimatingOffsetZ = true
-                        animationTimerOffsetZ = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { _ in
-                            withAnimation(.linear(duration: 0.05)) {
-                                if offsetZDirection {
-                                    offsetZ += 0.5
-                                    if offsetZ >= 30.0 {
-                                        offsetZDirection = false
-                                    }
-                                } else {
-                                    offsetZ -= 0.5
-                                    if offsetZ <= 0 {
-                                        offsetZDirection = true
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }, label: {
-                    Label("Z Offset", systemImage: isAnimatingOffsetZ ? "stop" : "play")
+                    Label("Next", systemImage: "arrow.clockwise")
                 })
                 
                 Button(action: {
@@ -122,10 +91,10 @@ fileprivate struct ModelViewEmoji: View {
                 model
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 60, height: 60)
+                    .frame(width: 200, height: 200)
                     .spatialOverlay(alignment: .center) {
                         Text(emoji)
-                            .font(.system(size: 30))
+                            .font(.system(size: 60))
                     }
             } else if phase.error != nil {
                 Text(emoji)
