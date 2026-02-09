@@ -17,9 +17,9 @@ struct ConceptRegistry {
         title: "Concept 002",
         type: .VOLUME,
         date: Date("2/4/2026"),
-        isFeatured: true,
+        isFeatured: false,
         subtitle: "Spheres in a Volume",
-        description: "",
+        description: "Just an example scene in a Volume",
         success: true,
         makeView: { AnyView(Concept002()) }
     ),
@@ -27,11 +27,21 @@ struct ConceptRegistry {
         title: "Concept 003",
         type: .SPACE_FULL,
         date: Date("2/4/2026"),
-        isFeatured: true,
+        isFeatured: false,
         subtitle: "Spheres in a Circle",
         description: "Creates an immersive space with N spheres positioned in a circle around the user. The first sphere is placed in front of the user, then duplicated and arranged in a loop.",
         success: true,
         makeView: { AnyView(Concept003()) }
+    ),
+    Concept(
+        title: "Concept 004",
+        type: .SPACE,
+        date: Date("2/6/2026"),
+        isFeatured: false,
+        subtitle: "Random Spheres in Space",
+        description: "120 spheres randomly placed throughout the scene",
+        success: true,
+        makeView: { AnyView(Concept004()) }
     )
     ]
 

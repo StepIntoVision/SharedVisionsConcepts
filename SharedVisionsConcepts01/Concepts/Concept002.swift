@@ -4,11 +4,11 @@
 //
 //  Subtitle: Spheres in a Volume
 //
-//  Description:
+//  Description: Just an example scene in a Volume
 //
 //  Type: Volume
 //
-//  Featured: true
+//  Featured: false
 //
 //  Created by Joseph Simpson on 2/4/26.
 
