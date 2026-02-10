@@ -49,7 +49,6 @@ fileprivate struct SharedVisionsBackground: View {
         HoneycombLayout(hexSize: 100, radius: 50, spacing: spacing) {
             ForEach(0..<72, id: \.self) { index in
                 PersonNode()
-                    .padding()
             }
         }
         .onAppear {
