@@ -17,13 +17,24 @@ import SwiftUI
 struct Concept007: View {
     let circleWindowSize: CGFloat = 800
     var body: some View {
-        ZStack {
-            SharedVisionsBackground()
-                .frame(width: circleWindowSize, height: circleWindowSize)
-                .glassBackgroundEffect(in: .capsule, displayMode: .always)
-                // Add a mask with a circle gradient
-            SharedVisionsTitleView()
+        TabView {
+            Tab("Shared Visions", systemImage: "circle.hexagongrid.fill") {
+                ZStack {
+                    SharedVisionsBackground()
+                    SharedVisionsTitleView()
+                }
+            }
+            
+            Tab("Library", systemImage: "circle.fill") {
+                Text("Library Content")
+            }
+            
+            Tab("Credits", systemImage: "ellipsis") {
+                Text("Credits Content")
+            }
         }
+        .frame(width: circleWindowSize, height: circleWindowSize)
+        .glassBackgroundEffect(in: .capsule, displayMode: .always)
     }
 }
 
@@ -83,7 +94,3 @@ fileprivate struct PersonNode: View {
         }
     }
 }
-
-// MARK: - Layout
-
-
