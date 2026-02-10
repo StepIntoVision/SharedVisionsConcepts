@@ -11,6 +11,21 @@ import SwiftUI
 // Adapted from Step Into Vision labs
 struct HoneycombLayout: Layout, Animatable {
     var angleOffset: Angle = .zero
+    var hexSize: CGFloat
+    var hexRadius: CGFloat
+    var spacing: CGFloat
+
+    init(
+        angleOffset: Angle = .zero,
+        hexSize: CGFloat = 100,
+        radius: CGFloat = 50,
+        spacing: CGFloat = 20
+    ) {
+        self.angleOffset = angleOffset
+        self.hexSize = hexSize
+        self.hexRadius = radius
+        self.spacing = spacing
+    }
 
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
         let updatedProposal = proposal.replacingUnspecifiedDimensions()
@@ -22,11 +37,9 @@ struct HoneycombLayout: Layout, Animatable {
         guard !subviews.isEmpty else { return }
 
         let center = CGPoint(x: bounds.midX, y: bounds.midY)
-        let hexSize: CGFloat = 100
-        let hexRadius = hexSize / 2
 
         // Calculate hexagon spacing (distance between centers)
-        let hexSpacing = hexRadius * sqrt(3) + 20
+        let hexSpacing = hexRadius * sqrt(3) + spacing
 
         // Generate hexagon positions in a spiral pattern
         var positions: [CGPoint] = []
@@ -37,9 +50,9 @@ struct HoneycombLayout: Layout, Animatable {
             // For each ring, place hexagons at 60-degree intervals
             for i in 0..<6 {
                 let angle = Double(i) * .pi / 3 + angleOffset.radians
-                let radius = Double(ring) * hexSpacing
-                let x = center.x + radius * cos(angle)
-                let y = center.y + radius * sin(angle)
+                let ringRadius = Double(ring) * hexSpacing
+                let x = center.x + ringRadius * cos(angle)
+                let y = center.y + ringRadius * sin(angle)
                 positions.append(CGPoint(x: x, y: y))
             }
 
@@ -48,7 +61,7 @@ struct HoneycombLayout: Layout, Animatable {
                 for i in 0..<6 {
                     let startAngle = Double(i) * .pi / 3 + angleOffset.radians
                     let endAngle = Double(i + 1) * .pi / 3 + angleOffset.radians
-                    let radius = Double(ring) * hexSpacing
+                    let ringRadius = Double(ring) * hexSpacing
 
                     // Add intermediate positions with adjusted radius for tighter honeycomb
                     for j in 1..<ring {
@@ -57,7 +70,7 @@ struct HoneycombLayout: Layout, Animatable {
                         // Adjust radius for items that should be closer to center
                         // Items at the edges of each segment get pulled in slightly
                         let radiusAdjustment = 0.15 // Pull items in by 15%
-                        let adjustedRadius = radius * (1.0 - radiusAdjustment)
+                        let adjustedRadius = ringRadius * (1.0 - radiusAdjustment)
 
                         let x = center.x + adjustedRadius * cos(angle)
                         let y = center.y + adjustedRadius * sin(angle)

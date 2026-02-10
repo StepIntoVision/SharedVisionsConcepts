@@ -25,9 +25,9 @@ struct Concept001: View {
         .glassBackgroundEffect(in: .capsule, displayMode: .always)
 
         .ornament(attachmentAnchor: .scene(.trailing), contentAlignment: .leading, ornament: {
-            VStack(spacing: 6) {
-                Text("The emoji here are intended to stand in for profile photos for each person.")
-                Text("Hover over each circle to see a full color version.")
+            VStack(alignment: .leading, spacing: 6) {
+                Text("• The emoji here are intended to stand in for profile photos for each person.")
+                Text("• Hover over each circle to see a full color version.")
             }
             .frame(width: 220)
             .padding()
@@ -43,10 +43,18 @@ struct Concept001: View {
 // MARK: - Supporting Views
 
 fileprivate struct SharedVisionsBackground: View {
+    @State private var spacing: CGFloat = 100
+
     var body: some View {
-        HoneycombLayout {
+        HoneycombLayout(hexSize: 100, radius: 50, spacing: spacing) {
             ForEach(0..<72, id: \.self) { index in
                 PersonNode()
+                    .padding()
+            }
+        }
+        .onAppear {
+            withAnimation(.spring(response: 0.8, dampingFraction: 0.6)) {
+                spacing = 20
             }
         }
     }
