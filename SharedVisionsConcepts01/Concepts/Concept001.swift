@@ -23,6 +23,16 @@ struct Concept001: View {
         }
         .frame(width: circleWindowSize, height: circleWindowSize)
         .glassBackgroundEffect(in: .capsule, displayMode: .always)
+
+        .ornament(attachmentAnchor: .scene(.trailing), contentAlignment: .leading, ornament: {
+            VStack(spacing: 6) {
+                Text("The emoji here are intended to stand in for profile photos for each person.")
+                Text("Hover over each circle to see a full color version.")
+            }
+            .frame(width: 220)
+            .padding()
+            .glassBackgroundEffect()
+        })
     }
 }
 
