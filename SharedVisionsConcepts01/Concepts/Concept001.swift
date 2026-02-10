@@ -61,24 +61,40 @@ fileprivate struct SharedVisionsTitleView: View {
 
 fileprivate struct PersonNode: View {
     @Namespace private var hoverNamespace
+    
+    // Mock profile image using emoji
+    let emoji: [String] = ["🌸", "🐸", "❤️", "🔥", "💻", "🐶", "🥸", "📱", "🎉", "🚀", "🤔", "💡"]
+    private let profileEmoji: String
+    
+    init() {
+        profileEmoji = emoji.randomElement() ?? "😀"
+    }
 
     var body: some View {
         ZStack {
+            // Background circle
             Circle()
                 .fill(.thinMaterial)
                 .frame(width: 80, height: 80)
-            Image(systemName: "person.fill")
-                .foregroundStyle(.secondary)
-                .font(.largeTitle)
+            
+            // Desaturated profile image (visible when not hovered)
+            Text(profileEmoji)
+                .font(.system(size: 50))
+                .grayscale(1.0) // Desaturated
+                .hoverEffect(in: HoverEffectGroup(hoverNamespace)) { effect, isActive, proxy in
+                    effect.opacity(isActive ? 0 : 1.0)
+                }
+            
+            // Full color profile image (visible when hovered)
+            Text(profileEmoji)
+                .font(.system(size: 50))
                 .hoverEffect(in: HoverEffectGroup(hoverNamespace)) { effect, isActive, proxy in
                     effect.opacity(isActive ? 1.0 : 0)
                 }
         }
         .padding(12)
         .hoverEffect(in: HoverEffectGroup(hoverNamespace)) { effect, isActive, proxy in
-            effect
-                .scaleEffect(isActive ? 1.2 : 1.0)
-                .opacity(isActive ? 1.0 : 0.2)
+            effect.scaleEffect(isActive ? 1.2 : 1.0)
         }
     }
 }
