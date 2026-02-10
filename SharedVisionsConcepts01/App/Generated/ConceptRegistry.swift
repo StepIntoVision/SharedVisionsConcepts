@@ -62,6 +62,16 @@ struct ConceptRegistry {
         description: "A volumetric ring of emoji spheres using RadialLayout with rotation controls and Z-axis offset animation for depth effects.",
         success: true,
         makeView: { AnyView(Concept006()) }
+    ),
+    Concept(
+        title: "Concept 007",
+        type: .WINDOW_ALT,
+        date: Date("2/10/2026"),
+        isFeatured: true,
+        subtitle: "Enhanced Profile Honeycomb",
+        description: "Enhanced version of the honeycomb grid with new interactive features",
+        success: true,
+        makeView: { AnyView(Concept007()) }
     )
     ]
 
