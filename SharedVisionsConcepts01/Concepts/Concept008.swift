@@ -1,48 +1,56 @@
-//  Shared Visions Concepts
+//  Step Into Vision - Example Code
 //
-//  Title: Concept007
+//  Title: Concept008
 //
-//  Subtitle: Tab View Circle Window
+//  Subtitle: Shared Visions Community Events
 //
 //  Description:
 //
-//  Type: Window Alt
+//  Type: Window
 //
 //  Featured: true
 //
-//  Created by Joseph Simpson on 2/10/26.
+//  Created by Joseph Simpson on 2/14/26.
 
 import SwiftUI
+import RealityKit
+import RealityKitContent
 
-struct Concept007: View {
-    let circleWindowSize: CGFloat = 800
+struct Concept008: View {
     var body: some View {
-        TabView {
-            Tab("Shared Visions", systemImage: "circle.hexagongrid.fill") {
-                ZStack {
-                    SharedVisionsBackground()
-                    SharedVisionsTitleView()
+        ZStack {
+            SharedVisionsBackground()
+            VStack(alignment: .leading, spacing : 24) {
+                VStack(alignment: .leading, spacing : 12) {
+                    Text("Shared Visions")
+                        .font(.largeTitle)
+
+                    Text("Weekly Community Meeting")
                 }
+
+                VStack(alignment: .leading, spacing : 12) {
+                    Text("• Every Wednesday")
+                    Text("• Story Updates")
+                    Text("• UX Work")
+                    Text("• App Development")
+                    Text("• Video Production")
+                }
+
+
             }
-            
-            Tab("Library", systemImage: "circle.fill") {
-                Text("Library Content")
-            }
-            
-            Tab("Credits", systemImage: "ellipsis") {
-                Text("Credits Content")
-            }
+//            .glassBackgroundEffect(.automatic, in: .circle, displayMode: .always)
+            .padding(24)
+            .background(.black)
+            .clipShape(.rect(cornerRadius: 24))
+//            .glassBackgroundEffect()
         }
-        .frame(width: circleWindowSize, height: circleWindowSize)
-        .glassBackgroundEffect(in: .capsule, displayMode: .always)
+        .frame(width: 600, height: 500)
     }
 }
 
 #Preview {
-    Concept007()
-        .environment(AppModel())
+    Concept008()
 }
-// MARK: - Supporting Views
 
 fileprivate struct SharedVisionsBackground: View {
     var body: some View {
@@ -75,7 +83,7 @@ fileprivate struct PersonNode: View {
     @Namespace private var hoverNamespace
 
     // Mock profile image using emoji
-    let emoji: [String] = ["🌸", "🐸", "❤️", "🔥", "💻", "🐶", "🥸", "📱", "🎉", "🚀", "🤔", "💡"]
+    let emoji: [String] = ["🧑🏻‍💻", "📖", "📢", "📺", "💻", "🎉", "🚀", "🤔", "💡"]
     private let profileEmoji: String
 
     init() {
@@ -92,7 +100,7 @@ fileprivate struct PersonNode: View {
             // Desaturated profile image (visible when not hovered)
             Text(profileEmoji)
                 .font(.system(size: 50))
-                .grayscale(1.0) // Desaturated
+//                .grayscale(0.8) // Desaturated
                 .hoverEffect(in: HoverEffectGroup(hoverNamespace)) { effect, isActive, proxy in
                     effect.opacity(isActive ? 0 : 1.0)
                 }

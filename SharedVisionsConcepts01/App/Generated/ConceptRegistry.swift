@@ -68,10 +68,20 @@ struct ConceptRegistry {
         type: .WINDOW_ALT,
         date: Date("2/10/2026"),
         isFeatured: true,
-        subtitle: "Enhanced Profile Honeycomb",
-        description: "Enhanced version of the honeycomb grid with new interactive features",
+        subtitle: "Tab View Circle Window",
+        description: "",
         success: true,
         makeView: { AnyView(Concept007()) }
+    ),
+    Concept(
+        title: "Concept 008",
+        type: .WINDOW,
+        date: Date("2/14/2026"),
+        isFeatured: true,
+        subtitle: "Shared Visions Community Events",
+        description: "",
+        success: true,
+        makeView: { AnyView(Concept008()) }
     )
     ]
 
