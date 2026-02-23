@@ -82,6 +82,16 @@ struct ConceptRegistry {
         description: "",
         success: true,
         makeView: { AnyView(Concept008()) }
+    ),
+    Concept(
+        title: "Concept 009",
+        type: .VOLUME,
+        date: Date("2/23/2026"),
+        isFeatured: false,
+        subtitle: "Small Sphere Volume",
+        description: "A minimal volume with a single small sphere.",
+        success: true,
+        makeView: { AnyView(Concept009()) }
     )
     ]
 
