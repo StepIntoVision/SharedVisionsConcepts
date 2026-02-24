@@ -87,7 +87,7 @@ struct ConceptRegistry {
         title: "Concept 009",
         type: .VOLUME,
         date: Date("2/23/2026"),
-        isFeatured: false,
+        isFeatured: true,
         subtitle: "Small Sphere Volume",
         description: "A minimal volume with a single small sphere.",
         success: true,

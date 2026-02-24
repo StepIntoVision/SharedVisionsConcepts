@@ -8,7 +8,7 @@
 //
 //  Type: Volume
 //
-//  Featured: false
+//  Featured: true
 //
 //  Created by Joseph Simpson on 2/23/26.
 
@@ -17,17 +17,18 @@ import RealityKit
 import RealityKitContent
 
 struct Concept009: View {
+
     var body: some View {
         RealityView { content in
-            let sphere = ModelEntity(
-                mesh: .generateSphere(radius: 0.03),
-                materials: [SimpleMaterial(color: .white, isMetallic: false)]
-            )
-            sphere.position = [0, 0, 0]
-            content.add(sphere)
+            print("getting spheres")
+            guard let uiSphere = try? await Entity(named: "UISphere01", in: realityKitContentBundle) else { return }
+            guard let glassSphere = try? await Entity(named: "GlassSphere", in: realityKitContentBundle) else { return }
+            content.add(uiSphere)
+            content.add(glassSphere)
+            glassSphere.position.y = 0.3
+            print("getting spheres loaded")
         }
-        .frame(width: 300, height: 300)
-        .frame(depth: 300)
+
     }
 }
 
