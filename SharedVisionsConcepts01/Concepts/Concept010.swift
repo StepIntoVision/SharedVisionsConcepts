@@ -2,7 +2,7 @@
 //
 //  Title: Concept010
 //
-//  Subtitle: Selective Sphere Lighting
+//  Subtitle: Active Profile Orbs
 //
 //  Description: Three glass profile orbs with selective backlight control
 //

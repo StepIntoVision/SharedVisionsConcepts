@@ -48,6 +48,15 @@
     "objectMetadataList" : [
       [
         "51DA3450-229E-4EA1-B1D1-AAB12D35A9DA",
+        "Root",
+        "GlassSphere"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "51DA3450-229E-4EA1-B1D1-AAB12D35A9DA",
         "Root"
       ],
       {
