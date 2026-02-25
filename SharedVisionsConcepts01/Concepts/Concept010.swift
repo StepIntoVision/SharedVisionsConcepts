@@ -42,7 +42,7 @@ struct Concept010: View {
                 
                 // Add attachment with profile image
                 if let attachmentAnchor = glassSphere.findEntity(named: "AttachmentAnchor") {
-                    let attachment = ViewAttachmentComponent(rootView: ProfileImage(emoji: profiles[i]))
+                    let attachment = ViewAttachmentComponent(rootView: ProfileImage(emoji: profiles[i], index: i, selectedSphere: $selectedSphere))
                     attachmentAnchor.components.set(attachment)
                 }
                 
@@ -120,10 +120,13 @@ struct Concept010: View {
 
 fileprivate struct ProfileImage: View {
     let emoji: String
+    let index: Int
+    @Binding var selectedSphere: Int
     
     var body: some View {
         Text(emoji)
             .font(.extraLargeTitle2)
+            .grayscale(selectedSphere == index ? 0.0 : 1.0)
     }
 }
 
