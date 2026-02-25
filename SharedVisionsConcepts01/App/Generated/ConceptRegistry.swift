@@ -88,8 +88,8 @@ struct ConceptRegistry {
         type: .VOLUME,
         date: Date("2/23/2026"),
         isFeatured: true,
-        subtitle: "Small Sphere Volume",
-        description: "A minimal volume with a single small sphere.",
+        subtitle: "Glass Profile Orbs",
+        description: "Inverted glass orbs with a backlight and an attachment for content",
         success: true,
         makeView: { AnyView(Concept009()) }
     )
