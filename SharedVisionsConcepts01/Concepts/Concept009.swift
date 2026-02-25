@@ -18,19 +18,85 @@ import RealityKitContent
 
 struct Concept009: View {
 
+    @State private var profileEntity = Entity()
+    @State private var profile = "🧑🏻‍💻"
+
     var body: some View {
         RealityView { content in
-            print("getting spheres")
-            guard let uiSphere = try? await Entity(named: "UISphere01", in: realityKitContentBundle) else { return }
             guard let glassSphere = try? await Entity(named: "GlassSphere", in: realityKitContentBundle) else { return }
-            content.add(uiSphere)
+            profileEntity = glassSphere
             content.add(glassSphere)
-            glassSphere.position.y = 0.3
-            print("getting spheres loaded")
+
+            if let attachmentAnchor = glassSphere.findEntity(named: "AttachmentAnchor") {
+                let attachment = ViewAttachmentComponent(rootView: ProfileImage(imageTemp: $profile))
+                attachmentAnchor.components.set(attachment)
+            }
+
+
+
+        }.toolbar {
+            ToolbarItem(placement: .bottomOrnament, content: {
+                HStack (spacing: 6 ) {
+                    Button(action: {
+                        print("🤔")
+                        profile = "🤔"
+                        changeLight()
+
+                    }, label: {
+                        Text("🤔")
+                    })
+                    Button(action: {
+                        print("🧑🏻‍💻")
+                        profile = "🧑🏻‍💻"
+                        changeLight()
+
+                    }, label: {
+                        Text("🧑🏻‍💻")
+                    })
+                    Button(action: {
+                        print("🐸")
+                        profile = "🐸"
+                        changeLight()
+
+
+                    }, label: {
+                        Text("🐸")
+                    })
+                }
+            })
         }
+        .controlSize(.large)
 
     }
+
+    func changeLight() {
+        if let light = profileEntity.findEntity(named: "PointLight") {
+
+            var newLightColor : UIColor
+            if(profile == "🧑🏻‍💻") {
+                newLightColor = .blue
+
+            } else if(profile == "🤔") {
+                newLightColor = .orange
+
+            } else {
+                newLightColor = .cyan
+
+            }
+            light.components[PointLightComponent.self]?.color = newLightColor
+
+        }
+    }
 }
+
+fileprivate struct ProfileImage: View {
+    @Binding var imageTemp: String
+    var body: some View {
+        Text(imageTemp)
+            .font(.extraLargeTitle2)
+    }
+}
+
 
 #Preview {
     Concept009()

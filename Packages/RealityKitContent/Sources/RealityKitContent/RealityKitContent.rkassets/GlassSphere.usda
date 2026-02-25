@@ -3,19 +3,27 @@
     customLayerData = {
         string creator = "Reality Composer Pro Version 2.0 (494.60.2)"
     }
-    defaultPrim = "Root"
+    defaultPrim = "Sphere"
     metersPerUnit = 1
     upAxis = "Y"
 )
 
-def Xform "Root"
+def Xform "Root" (
+    active = true
+)
 {
-    def Sphere "Sphere" (
+    reorder nameChildren = ["GlassSphere", "AttachmentAnchor"]
+    quatf xformOp:orient = (1, 0, 0, 0)
+    float3 xformOp:scale = (1, 1, 1)
+    float3 xformOp:translate = (0, 0, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+    def Sphere "GlassSphere" (
         prepend apiSchemas = ["MaterialBindingAPI"]
     )
     {
-        rel material:binding = </Root/Sphere/DefaultMaterial>
-        double radius = 0.102
+        rel material:binding = </Root/GlassSphere/DefaultMaterial>
+        double radius = 0.15
         float2 ui:nodegraph:node:pos = (140, 140)
         int ui:nodegraph:node:stackingOrder = 7
         quatf xformOp:orient = (1, 0, 0, 0)
@@ -25,12 +33,12 @@ def Xform "Root"
 
         def Material "DefaultMaterial"
         {
-            token cullMode = "back" (
+            token cullMode = "front" (
                 allowedTokens = ["unspecified", "none", "front", "back"]
             )
-            token outputs:mtlx:surface.connect = </Root/Sphere/DefaultMaterial/PreviewSurface.outputs:out>
+            token outputs:mtlx:surface.connect = </Root/GlassSphere/DefaultMaterial/PreviewSurface.outputs:out>
             token outputs:realitykit:vertex
-            token outputs:surface.connect = </Root/Sphere/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+            token outputs:surface.connect = </Root/GlassSphere/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
             float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (0, 110.5)
 
             def Shader "DefaultSurfaceShader" (
@@ -59,7 +67,7 @@ def Xform "Root"
             def Shader "PreviewSurface"
             {
                 uniform token info:id = "ND_UsdPreviewSurface_surfaceshader"
-                color3f inputs:diffuseColor.connect = </Root/Sphere/DefaultMaterial/BlurredBackground.outputs:out>
+                color3f inputs:diffuseColor.connect = </Root/GlassSphere/DefaultMaterial/BlurredBackground.outputs:out>
                 float inputs:metallic
                 float3 inputs:normal
                 float inputs:opacity
@@ -85,12 +93,31 @@ def Xform "Root"
             def RealityKitStruct "Shape"
             {
                 float3 extent = (0.2, 0.2, 0.2)
-                token shapeType = "Box"
+                float radius = 0.102
+                token shapeType = "Sphere"
 
                 def RealityKitStruct "pose"
                 {
                 }
             }
+        }
+    }
+
+    def Xform "AttachmentAnchor" (
+        active = true
+    )
+    {
+        float3 xformOp:scale = (5, 5, 5)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def Xform "PointLight"
+    {
+        def RealityKitComponent "PointLight"
+        {
+            float3 color = (0.19322893, 0.21851796, 1)
+            token info:id = "RealityKit.PointLight"
+            float intensity = 400
         }
     }
 }
