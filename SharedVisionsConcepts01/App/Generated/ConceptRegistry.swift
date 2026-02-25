@@ -92,6 +92,16 @@ struct ConceptRegistry {
         description: "Inverted glass orbs with a backlight and an attachment for content",
         success: true,
         makeView: { AnyView(Concept009()) }
+    ),
+    Concept(
+        title: "Concept 010",
+        type: .VOLUME,
+        date: Date("2/25/2026"),
+        isFeatured: true,
+        subtitle: "Selective Sphere Lighting",
+        description: "Three glass profile orbs with selective backlight control",
+        success: true,
+        makeView: { AnyView(Concept010()) }
     )
     ]
 
